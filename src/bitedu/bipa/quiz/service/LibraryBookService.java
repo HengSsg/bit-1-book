@@ -2,11 +2,13 @@ package bitedu.bipa.quiz.service;
 
 import bitedu.bipa.quiz.ListDTO;
 import bitedu.bipa.quiz.dao.LibraryDAO;
+import bitedu.bipa.quiz.dto.UserDTO;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 import java.io.FileWriter;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class LibraryBookService {
@@ -59,6 +61,10 @@ public class LibraryBookService {
         //반납 예정 목록 추가
         JSONArray returnList = getReturnList();
         obj.put("soonReturnList", returnList);
+
+        //사용자 정보 - 이지민
+        JSONArray totalUserInfo = getTotalUserInfo();
+        obj.put("totalUserInfo", totalUserInfo);
 
 
         try (FileWriter file = new FileWriter("front/data.json")) {
@@ -131,7 +137,21 @@ public class LibraryBookService {
         }
         return totals;
     }
-    
+
+    public JSONArray getTotalUserInfo() {
+        UserDTO dto = dao.selectBookInfoByUser();
+
+        JSONObject innerJO = new JSONObject();
+        JSONArray totalUser = new JSONArray();
+
+        innerJO.put("status", dto.getStatus());
+        innerJO.put("maxBook", dto.getMaxBook());
+        innerJO.put("serviceStop", dto.getServiceStop());
+
+        totalUser.add(innerJO);
+
+        return totalUser;
+    }
     // 미반납 도서 목록 출력 - 김선규 추가
     public JSONArray getOverdueBookListByUserId() {
         ArrayList<ListDTO> lists = dao.getOverdueBookListByUserId();

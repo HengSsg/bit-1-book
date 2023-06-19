@@ -3,51 +3,6 @@ const returned = document.getElementById("returned");
 const not_returned = document.getElementById("not_returned");
 const totexpecting_returnal = document.getElementById("expecting_return");
 
-$.ajax({
-  url: "data.json",
-  type: "GET",
-  dataType: "json",
-  success: function (data) {
-    for (let i = 0; i < data.totalBookList.length; i++) {
-      total.innerHTML += `<tr>
-          <td>${data.totalBookList[i].bookNum}</td>
-          <td>${data.totalBookList[i].bookName}</td>
-          <td>${data.totalBookList[i].author}</td>
-          <td>${data.totalBookList[i].rentDate}</td>
-          <td>${data.totalBookList[i].returnDate}}</td>
-      </tr>`;
-    }
-
-    for (let i = 0; i < data.totalReturnList.length; i++) {
-      returned.innerHTML += `<tr>
-            <td>${data.totalReturnList[i].bookNum}</td>
-            <td>${data.totalReturnList[i].bookName}</td>
-            <td>${data.totalReturnList[i].author}</td>
-            <td>${data.totalReturnList[i].rentDate}</td>
-            <td>${data.totalReturnList[i].returnDate}}</td>
-        </tr>`;
-    }
-    for (let i = 0; i < data.noReturnList.length; i++) {
-      not_returned.innerHTML += `<tr>
-              <td>${data.noReturnList[i].bookNum}</td>
-              <td>${data.noReturnList[i].bookName}</td>
-              <td>${data.noReturnList[i].author}</td>
-              <td>${data.noReturnList[i].rentDate}</td>
-              <td>${data.noReturnList[i].returnDate}}</td>
-          </tr>`;
-    }
-    for (let i = 0; i < data.soonReturnList.length; i++) {
-      totexpecting_returnal.innerHTML += `<tr>
-              <td>${data.soonReturnList[i].bookNum}</td>
-              <td>${data.soonReturnList[i].bookName}</td>
-              <td>${data.soonReturnList[i].author}</td>
-              <td>${data.soonReturnList[i].rentDate}</td>
-              <td>${data.soonReturnList[i].returnDate}}</td>
-          </tr>`;
-    }
-  },
-});
-
 const user_status = document.getElementById("user_status");
 
 function list() {
@@ -75,6 +30,44 @@ function list() {
         <td>${data.userData.status}</td>
         <td>${data.userData.stopPeriod}</td>
     </tr>`;
+
+      for (let i = 0; i < data.userData.totalBookList.length; i++) {
+        total.innerHTML += `<tr>
+          <td>${data.userData.totalBookList[i].book_seq}</td>
+          <td>${data.userData.totalBookList[i].book_title}</td>
+          <td>${data.userData.totalBookList[i].book_author}</td>
+          <td>${data.userData.totalBookList[i].borrow_start}</td>
+          <td>${data.userData.totalBookList[i].borrow_end}}</td>
+      </tr>`;
+      }
+
+      for (let i = 0; i < data.userData.totalReturnList.length; i++) {
+        returned.innerHTML += `<tr>
+            <td>${data.userData.totalReturnList[i].book_seq}</td>
+            <td>${data.userData.totalReturnList[i].book_title}</td>
+            <td>${data.userData.totalReturnList[i].book_author}</td>
+            <td>${data.userData.totalReturnList[i].borrow_start}</td>
+            <td>${data.userData.totalReturnList[i].borrow_end}}</td>
+        </tr>`;
+      }
+      for (let i = 0; i < data.userData.noReturnList.length; i++) {
+        not_returned.innerHTML += `<tr>
+              <td>${data.userData.noReturnList[i].book_seq}</td>
+              <td>${data.userData.noReturnList[i].book_title}</td>
+              <td>${data.userData.noReturnList[i].book_author}</td>
+              <td>${data.userData.noReturnList[i].borrow_start}</td>
+              <td>${data.userData.noReturnList[i].borrow_end}}</td>
+          </tr>`;
+      }
+      for (let i = 0; i < data.userData.soonReturnList.length; i++) {
+        totexpecting_returnal.innerHTML += `<tr>
+              <td>${data.userData.soonReturnList[i].book_seq}</td>
+              <td>${data.userData.soonReturnList[i].book_title}</td>
+              <td>${data.userData.soonReturnList[i].book_author}</td>
+              <td>${data.userData.soonReturnList[i].borrow_start}</td>
+              <td>${data.userData.soonReturnList[i].borrow_end}}</td>
+          </tr>`;
+      }
     },
   });
 }

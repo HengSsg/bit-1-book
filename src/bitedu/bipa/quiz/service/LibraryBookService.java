@@ -43,6 +43,7 @@ public class LibraryBookService {
     }
 
     public void getUserInfo() {
+        JSONObject result = new JSONObject();
         JSONObject obj = new JSONObject();
         // 전체 도서 목록 - 안은비 추가
         JSONArray totalBookList = getBorrowListByUserId();
@@ -52,8 +53,11 @@ public class LibraryBookService {
         JSONArray totalReturnList = getTotalReturnList();
         obj.put("totalReturnList", totalReturnList);
 
+
         try (FileWriter file = new FileWriter("front/data.json")) {
-            file.write(obj.toJSONString());
+            result.put("userData",obj);
+
+            file.write(result.toJSONString());
 
         } catch (IOException e) {
             e.printStackTrace();

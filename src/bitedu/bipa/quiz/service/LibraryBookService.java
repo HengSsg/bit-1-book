@@ -52,6 +52,9 @@ public class LibraryBookService {
         // 전체반납목록
         JSONArray totalReturnList = getTotalReturnList();
         obj.put("totalReturnList", totalReturnList);
+        
+        JSONArray OverdueBookList = getOverdueBookListByUserId();
+        obj.put("OverdueBookList", OverdueBookList);
 
         //반납 예정 목록 추가
         JSONArray returnList = getReturnList();
@@ -115,6 +118,23 @@ public class LibraryBookService {
     // 전체 도서 목록 출력 - 안은비 추가
     public JSONArray getBorrowListByUserId() {
         ArrayList<ListDTO> lists = dao.selectBookListByUserId();
+        JSONArray totals = new JSONArray();
+        for (ListDTO list : lists) {
+            JSONObject total = new JSONObject();
+            total.put("book_seq", list.getBook_seq());
+            total.put("book_title", list.getBook_title());
+            total.put("book_author", list.getBook_author());
+            total.put("borrow_start", list.getBorrow_start().toString());
+            total.put("borrow_end", list.getBorrow_end().toString());
+
+            totals.add(total);
+        }
+        return totals;
+    }
+    
+    // 미반납 도서 목록 출력 - 김선규 추가
+    public JSONArray getOverdueBookListByUserId() {
+        ArrayList<ListDTO> lists = dao.getOverdueBookListByUserId();
         JSONArray totals = new JSONArray();
         for (ListDTO list : lists) {
             JSONObject total = new JSONObject();

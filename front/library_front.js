@@ -31,6 +31,13 @@ function list() {
         <td>${data.userData.stopPeriod}</td>
     </tr>`;
 
+      total.innerHTML = `<tr>
+      <td>도서번호</td>
+      <td>도서명</td>
+      <td>저자</td>
+      <td>대출일자</td>
+      <td>반납일자</td>
+    </tr>`;
       for (let i = 0; i < data.userData.totalBookList.length; i++) {
         total.innerHTML += `<tr>
           <td>${data.userData.totalBookList[i].book_seq}</td>
@@ -41,6 +48,13 @@ function list() {
       </tr>`;
       }
 
+      returned.innerHTML = `<tr>
+      <td>도서번호</td>
+      <td>도서명</td>
+      <td>저자</td>
+      <td>대출일자</td>
+      <td>반납일자</td>
+    </tr>`;
       for (let i = 0; i < data.userData.totalReturnList.length; i++) {
         returned.innerHTML += `<tr>
             <td>${data.userData.totalReturnList[i].book_seq}</td>
@@ -50,6 +64,14 @@ function list() {
             <td>${data.userData.totalReturnList[i].borrow_end}</td>
         </tr>`;
       }
+      not_returned.innerHTML = `
+      <tr>
+            <td>도서번호</td>
+            <td>도서명</td>
+            <td>저자</td>
+            <td>대출일자</td>
+            <td>반납일자</td>
+          </tr>`;
       for (let i = 0; i < data.userData.noReturnList.length; i++) {
         not_returned.innerHTML += `<tr>
               <td>${data.userData.noReturnList[i].book_seq}</td>
@@ -59,6 +81,13 @@ function list() {
               <td>${data.userData.noReturnList[i].borrow_end}</td>
           </tr>`;
       }
+      totexpecting_returnal.innerHTML = `<tr>
+      <td>도서번호</td>
+      <td>도서명</td>
+      <td>저자</td>
+      <td>대출일자</td>
+      <td>반납일자</td>
+    </tr>`;
       for (let i = 0; i < data.userData.soonReturnList.length; i++) {
         totexpecting_returnal.innerHTML += `<tr>
               <td>${data.userData.soonReturnList[i].book_seq}</td>

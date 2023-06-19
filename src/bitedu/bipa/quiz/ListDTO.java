@@ -1,4 +1,4 @@
-package dto;
+package bitedu.bipa.quiz;
 
 import java.sql.Date;
 

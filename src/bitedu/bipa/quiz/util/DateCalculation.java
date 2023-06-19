@@ -1,4 +1,4 @@
-package util;
+package bitedu.bipa.quiz.util;
 
 public class DateCalculation {
 	

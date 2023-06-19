@@ -1,4 +1,4 @@
-package vo;
+package bitedu.bipa.quiz.vo;
 
 import java.sql.Timestamp;
 

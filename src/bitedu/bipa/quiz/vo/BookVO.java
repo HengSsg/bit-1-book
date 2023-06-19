@@ -1,4 +1,4 @@
-package vo;
+package bitedu.bipa.quiz.vo;
 
 public class BookVO {
 	private int bookSeq;

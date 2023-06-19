@@ -11,6 +11,8 @@ function list() {
     type: "GET",
     dataType: "json",
     success: function (data) {
+      console.log(data.userData.totalUserInfo[0].status);
+
       user_status.innerHTML = `
       <tr>
             <td>대출도서</td>
@@ -22,13 +24,24 @@ function list() {
             <td>대출정지기간</td>
           </tr>
           <tr>
-        <td>${data.userData.rentNum}</td>
-        <td>${data.userData.returnNum}</td>
-        <td>${data.userData.noReturnNum}</td>
-        <td>${data.userData.soonReturnNum}</td>
-        <td>${data.userData.availRentNum}</td>
-        <td>${data.userData.status}</td>
-        <td>${data.userData.stopPeriod}</td>
+        <td>${data.userData.totalBookList.length}</td>
+        <td>${data.userData.totalReturnList.length}</td>
+        <td>${data.userData.overdueBookList.length}</td>
+        <td>${data.userData.soonReturnList.length}</td>
+        <td>${
+          data.userData.totalUserInfo[0].maxBook -
+          data.userData.soonReturnList.length
+        }</td>
+        <td>${
+          data.userData.totalUserInfo[0].status === "00"
+            ? "사용가능"
+            : "사용불가"
+        }</td>
+        <td>${
+          data.userData.totalUserInfo.serviceStop == null
+            ? "-"
+            : data.userData.totalUserInfo.serviceStop
+        }</td>
     </tr>`;
 
       total.innerHTML = `<tr>

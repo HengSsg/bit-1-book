@@ -53,9 +53,10 @@ public class LibraryBookService {
         JSONArray totalReturnList = getTotalReturnList();
         obj.put("totalReturnList", totalReturnList);
 
-        // 반납예정목록 추가
-        JSONArray returnList = getreturnList();
+        //반납 예정 목록 추가
+        JSONArray returnList = getReturnList();
         obj.put("totalReturnList", returnList);
+
 
         try (FileWriter file = new FileWriter("front/data.json")) {
             result.put("userData",obj);
@@ -90,8 +91,8 @@ public class LibraryBookService {
         return jsonArray;
     }
     
-	// 반납예정목록 추가
-	public JSONArray getreturnList() {
+	// 반납예정목록 
+	public JSONArray getReturnList() {
 		ArrayList<ListDTO> returnlist = dao.returnList();
 
 		JSONArray jsonArray = new JSONArray();
@@ -102,8 +103,8 @@ public class LibraryBookService {
 				jsonObject.put("book_seq", one.getBook_seq());
 				jsonObject.put("book_title", one.getBook_title());
 				jsonObject.put("book_author", one.getBook_author());
-				jsonObject.put("borrow_start", one.getBorrow_start());
-				jsonObject.put("borrow_end", one.getBorrow_end());
+				jsonObject.put("borrow_start", one.getBorrow_start().toString());
+				jsonObject.put("borrow_end", one.getBorrow_end().toString());
 				
 				jsonArray.add(jsonObject);
 			}

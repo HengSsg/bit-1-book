@@ -64,6 +64,8 @@ function list() {
             <td>${data.userData.totalReturnList[i].borrow_end}</td>
         </tr>`;
       }
+
+      // 미반납도서
       not_returned.innerHTML = `
       <tr>
             <td>도서번호</td>
@@ -72,13 +74,13 @@ function list() {
             <td>대출일자</td>
             <td>반납일자</td>
           </tr>`;
-      for (let i = 0; i < data.userData.noReturnList.length; i++) {
+      for (let i = 0; i < data.userData.overdueBookList.length; i++) {
         not_returned.innerHTML += `<tr>
-              <td>${data.userData.noReturnList[i].book_seq}</td>
-              <td>${data.userData.noReturnList[i].book_title}</td>
-              <td>${data.userData.noReturnList[i].book_author}</td>
-              <td>${data.userData.noReturnList[i].borrow_start}</td>
-              <td>${data.userData.noReturnList[i].borrow_end}</td>
+              <td>${data.userData.overdueBookList[i].book_seq}</td>
+              <td>${data.userData.overdueBookList[i].book_title}</td>
+              <td>${data.userData.overdueBookList[i].book_author}</td>
+              <td>${data.userData.overdueBookList[i].borrow_start}</td>
+              <td>${data.userData.overdueBookList[i].borrow_end}</td>
           </tr>`;
       }
       totexpecting_returnal.innerHTML = `<tr>

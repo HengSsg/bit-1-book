@@ -54,7 +54,7 @@ public class LibraryBookService {
         obj.put("totalReturnList", totalReturnList);
 
         JSONArray OverdueBookList = getOverdueBookListByUserId();
-        obj.put("OverdueBookList", OverdueBookList);
+        obj.put("overdueBookList", OverdueBookList);
 
         //반납 예정 목록 추가
         JSONArray returnList = getReturnList();

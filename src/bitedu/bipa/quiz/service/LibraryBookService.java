@@ -86,6 +86,27 @@ public class LibraryBookService {
 
         return jsonArray;
     }
+    
+	// 반납예정목록
+	public JSONArray returnList() {
+		ArrayList<ListDTO> returnlist = dao.returnList();
+
+		JSONArray jsonArray = new JSONArray();
+
+		for (ListDTO one : returnlist) {
+			{
+				JSONObject jsonObject = new JSONObject();
+				jsonObject.put("book_seq", one.getBook_seq());
+				jsonObject.put("book_title", one.getBook_title());
+				jsonObject.put("book_author", one.getBook_author());
+				jsonObject.put("borrow_start", one.getBorrow_start());
+				jsonObject.put("borrow_end", one.getBorrow_end());
+				
+				jsonArray.add(jsonObject);
+			}
+		}
+		return jsonArray;
+	}
 
     // 전체 도서 목록 출력 - 안은비 추가
     public JSONArray getBorrowListByUserId() {

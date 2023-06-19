@@ -1,0 +1,34 @@
+{
+  "totalReturnList": [
+    {
+      "book_title": "부모라는 낯선 타인 : 나를 알기 위해 부모 공부를 시작합니다",
+      "book_seq": 16,
+      "borrow_end": "2023-06-19",
+      "book_author": "양미영 지음",
+      "borrow_start": "2023-06-05"
+    }
+  ],
+  "totalBookList": [
+    {
+      "book_title": "도둑맞은 뇌 : 뇌과학이 발견한 기억의 7가지 오류",
+      "book_seq": 3,
+      "borrow_end": "2023-06-15",
+      "book_author": "대니얼 샥터 지음 ; 홍보람 옮김",
+      "borrow_start": "2023-06-01"
+    },
+    {
+      "book_title": "만들어진 붕괴 : 역사상 최악의 인플레이션 공격에서 당신의 돈을 지키는 법",
+      "book_seq": 10,
+      "borrow_end": "2023-06-19",
+      "book_author": "데이비드 A. 스톡맨 지음 ; 한다해 옮김",
+      "borrow_start": "2023-06-05"
+    },
+    {
+      "book_title": "부모라는 낯선 타인 : 나를 알기 위해 부모 공부를 시작합니다",
+      "book_seq": 16,
+      "borrow_end": "2023-06-19",
+      "book_author": "양미영 지음",
+      "borrow_start": "2023-06-05"
+    }
+  ]
+}

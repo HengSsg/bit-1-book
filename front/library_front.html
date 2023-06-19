@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Book Service</title>
+    <style>
+      table,
+      td {
+        border: 1px solid black;
+        border-collapse: collapse;
+        position: relative;
+        margin: 10px 150px;
+      }
+
+      td {
+        width: 100px;
+        height: 40px;
+        text-align: center;
+      }
+
+      span {
+        margin-left: 150px;
+      }
+      div {
+        margin-bottom: 20px;
+      }
+    </style>
+    <script src="https://code.jquery.com/jquery-latest.min.js"></script>
+  </head>
+  <body>
+    <span><button onclick="list()">user1 도서현황보기</button></span>
+    <div id="container">
+      <div>
+        <table id="user_status">
+          <tr>
+            <td>대출도서</td>
+            <td>반납도서</td>
+            <td>미반납도서</td>
+            <td>반납예정도서</td>
+            <td>대출가능권수</td>
+            <td>이용상태</td>
+            <td>대출정지기간</td>
+          </tr>
+        </table>
+      </div>
+      <br />
+      <div>
+        <span>전체도서목록</span>
+        <table id="total">
+          <tr>
+            <td>도서번호</td>
+            <td>도서명</td>
+            <td>저자</td>
+            <td>대출일자</td>
+            <td>반납일자</td>
+          </tr>
+        </table>
+      </div>
+
+      <div>
+        <span>전체반납목록</span>
+        <table id="returned">
+          <tr>
+            <td>도서번호</td>
+            <td>도서명</td>
+            <td>저자</td>
+            <td>대출일자</td>
+            <td>반납일자</td>
+          </tr>
+        </table>
+      </div>
+      <div>
+        <span>미반납목록</span>
+        <table id="not_returned">
+          <tr>
+            <td>도서번호</td>
+            <td>도서명</td>
+            <td>저자</td>
+            <td>대출일자</td>
+            <td>반납일자</td>
+          </tr>
+        </table>
+      </div>
+      <div>
+        <span>반납예정목록</span>
+        <table id="expecting_return">
+          <tr>
+            <td>도서번호</td>
+            <td>도서명</td>
+            <td>저자</td>
+            <td>대출일자</td>
+            <td>반납일자</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+    <script src="library_front.js"></script>
+  </body>
+</html>

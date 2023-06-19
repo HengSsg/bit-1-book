@@ -52,7 +52,7 @@ public class LibraryBookService {
         JSONArray totalReturnList = getTotalReturnList();
         obj.put("totalReturnList", totalReturnList);
 
-        try (FileWriter file = new FileWriter("/Users/hengssg/Downloads/박형석/exam/data2.json")) {
+        try (FileWriter file = new FileWriter("front/data.json")) {
             file.write(obj.toJSONString());
 
         } catch (IOException e) {

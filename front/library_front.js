@@ -37,7 +37,7 @@ function list() {
           <td>${data.userData.totalBookList[i].book_title}</td>
           <td>${data.userData.totalBookList[i].book_author}</td>
           <td>${data.userData.totalBookList[i].borrow_start}</td>
-          <td>${data.userData.totalBookList[i].borrow_end}}</td>
+          <td>${data.userData.totalBookList[i].borrow_end}</td>
       </tr>`;
       }
 
@@ -47,7 +47,7 @@ function list() {
             <td>${data.userData.totalReturnList[i].book_title}</td>
             <td>${data.userData.totalReturnList[i].book_author}</td>
             <td>${data.userData.totalReturnList[i].borrow_start}</td>
-            <td>${data.userData.totalReturnList[i].borrow_end}}</td>
+            <td>${data.userData.totalReturnList[i].borrow_end}</td>
         </tr>`;
       }
       for (let i = 0; i < data.userData.noReturnList.length; i++) {
@@ -56,7 +56,7 @@ function list() {
               <td>${data.userData.noReturnList[i].book_title}</td>
               <td>${data.userData.noReturnList[i].book_author}</td>
               <td>${data.userData.noReturnList[i].borrow_start}</td>
-              <td>${data.userData.noReturnList[i].borrow_end}}</td>
+              <td>${data.userData.noReturnList[i].borrow_end}</td>
           </tr>`;
       }
       for (let i = 0; i < data.userData.soonReturnList.length; i++) {
@@ -65,7 +65,7 @@ function list() {
               <td>${data.userData.soonReturnList[i].book_title}</td>
               <td>${data.userData.soonReturnList[i].book_author}</td>
               <td>${data.userData.soonReturnList[i].borrow_start}</td>
-              <td>${data.userData.soonReturnList[i].borrow_end}}</td>
+              <td>${data.userData.soonReturnList[i].borrow_end}</td>
           </tr>`;
       }
     },

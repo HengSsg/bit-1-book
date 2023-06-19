@@ -164,5 +164,35 @@ public class LibraryDAO {
         }
         return bookList;
     }
+    
+    // 미반납 도석 목록 - 김선규 추가
+    public ArrayList<ListDTO> getOverdueBookListByUserId(){
+        ArrayList<ListDTO> bookList = new ArrayList<>();
+
+        String sql = "SELECT book_use_status.book_seq, book_info.book_title, book_info.book_author, book_use_status.borrow_start, book_use_status.borrow_end\n"
+    			+ "FROM book_use_status\n"
+    			+ "INNER JOIN book_copy ON book_use_status.book_seq = book_copy.book_seq\n"
+    			+ "INNER JOIN book_info ON book_copy.book_isbn = book_info.book_isbn\n"
+    			+ "where book_use_status.borrow_end < curdate() and book_use_status.return_date IS NULL and book_use_status.user_id = ?";
+
+        try {
+            PreparedStatement pstmt = con.prepareStatement(sql);
+            pstmt.setString(1,"User1");
+            ResultSet rs = pstmt.executeQuery();
+            while(rs.next()) {
+                ListDTO list = new ListDTO();
+                list.setBook_seq(rs.getInt(1));
+                list.setBook_title( rs.getString(2));
+                list.setBook_author(rs.getString(3));
+                list.setBorrow_start(rs.getDate(4));
+                list.setBorrow_end( rs.getDate(5));
+
+                bookList.add(list);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return bookList;
+    }
 
 }

@@ -132,6 +132,37 @@ public class LibraryDAO {
 
         return list;
     }
+    
+	// 반납예정목록
+	public ArrayList<ListDTO> returnList() {
+		ArrayList<ListDTO> list = new ArrayList<>();
+
+		String sql = "SELECT bs.book_seq, bi.book_title, bi.book_author, bs.borrow_start, bs.borrow_end "
+				+ "FROM book_info bi " + "JOIN book_copy bc ON bi.book_isbn = bc.book_isbn "
+				+ "JOIN book_use_status bs ON bs.book_seq = bc.book_seq "
+				+ "WHERE bs.user_id = 'User1' AND bs.borrow_end < CURDATE() AND bs.return_date IS NULL";
+
+		try {
+
+			PreparedStatement pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, "User1");
+			ResultSet rs = pstmt.executeQuery();
+
+			while (rs.next()) {
+				ListDTO listDTO = new ListDTO();
+				listDTO.setBook_seq(rs.getInt("book_seq"));
+				listDTO.setBook_title(rs.getString("book_title"));
+				listDTO.setBook_author(rs.getString("book_author"));
+				listDTO.setBorrow_start(rs.getDate("borrow_start"));
+				listDTO.setBorrow_end(rs.getDate("borrow_end"));
+				list.add(listDTO);
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return list;
+	}
 
     // 전체 도서목록 - 안은비 추가
     public ArrayList<ListDTO> selectBookListByUserId(){

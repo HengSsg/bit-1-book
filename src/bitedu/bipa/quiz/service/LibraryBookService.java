@@ -49,16 +49,16 @@ public class LibraryBookService {
         JSONArray totalBookList = getBorrowListByUserId();
         obj.put("totalBookList", totalBookList);
 
-        // 전체반납목록
+        // 전체반납목록 - 박형석 추가
         JSONArray totalReturnList = getTotalReturnList();
         obj.put("totalReturnList", totalReturnList);
-        
+
         JSONArray OverdueBookList = getOverdueBookListByUserId();
         obj.put("OverdueBookList", OverdueBookList);
 
         //반납 예정 목록 추가
         JSONArray returnList = getReturnList();
-        obj.put("totalReturnList", returnList);
+        obj.put("soonReturnList", returnList);
 
 
         try (FileWriter file = new FileWriter("front/data.json")) {

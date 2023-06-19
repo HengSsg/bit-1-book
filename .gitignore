@@ -30,3 +30,5 @@ bin/
 
 data/db.properties
 front/data.json
+*.properties
+data/db.properties

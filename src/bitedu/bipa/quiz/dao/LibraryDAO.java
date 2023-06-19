@@ -1,6 +1,7 @@
 package bitedu.bipa.quiz.dao;
 
 import bitedu.bipa.quiz.ListDTO;
+import bitedu.bipa.quiz.dto.UserDTO;
 import bitedu.bipa.quiz.util.ConnectionManager;
 import bitedu.bipa.quiz.vo.UserVO;
 
@@ -63,14 +64,6 @@ public class LibraryDAO {
         }
         return flag;
     }
-
-
-    // 메소드 이름: selectBookInfoByUser 파라메터와 리턴타입은 분석에 의해 자유롭게
-    public void selectBookInfoByUser() {
-
-
-    }
-
 
     public UserVO selectUser(String user_id) {
         UserVO userVO = null;
@@ -196,4 +189,21 @@ public class LibraryDAO {
         return bookList;
     }
 
+    public UserDTO selectBookInfoByUser() {
+        UserDTO dto = new UserDTO();
+        String sql = "select user_status, max_book, service_stop from book_user where user_id='user1'";
+        PreparedStatement ps = null;
+        try {
+            ps = this.con.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+            if(rs.next()) {
+                dto.setStatus(rs.getString(1));
+                dto.setMaxBook(rs.getInt(2));
+                dto.setServiceStop(rs.getDate(3));
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return dto;
+    }
 }

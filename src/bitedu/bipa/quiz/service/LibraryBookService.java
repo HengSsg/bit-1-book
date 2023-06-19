@@ -2,11 +2,13 @@ package bitedu.bipa.quiz.service;
 
 import bitedu.bipa.quiz.ListDTO;
 import bitedu.bipa.quiz.dao.LibraryDAO;
+import bitedu.bipa.quiz.dto.UserDTO;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 import java.io.FileWriter;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class LibraryBookService {
@@ -52,6 +54,10 @@ public class LibraryBookService {
         // 전체반납목록
         JSONArray totalReturnList = getTotalReturnList();
         obj.put("totalReturnList", totalReturnList);
+
+        //사용자 정보 - 이지민
+        JSONArray totalUserInfo = getTotalUserInfo();
+        obj.put("totalUserInfo", totalUserInfo);
 
 
         try (FileWriter file = new FileWriter("front/data.json")) {
@@ -122,6 +128,21 @@ public class LibraryBookService {
 
             totals.add(total);
         }
+        return totals;
+    }
+
+    public JSONArray getTotalUserInfo() {
+        UserDTO dto = dao.selectBookInfoByUser();
+
+        JSONObject innerJO = new JSONObject();
+        JSONArray totals = new JSONArray();
+
+        innerJO.put("status", dto.getStatus());
+        innerJO.put("maxBook", dto.getMaxBook());
+        innerJO.put("serviceStop", dto.getServiceStop());
+
+        totals.add(innerJO);
+
         return totals;
     }
 }

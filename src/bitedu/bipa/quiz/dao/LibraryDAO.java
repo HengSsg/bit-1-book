@@ -125,6 +125,7 @@ public class LibraryDAO {
                 list.add(listDTO);
             }
 
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -158,7 +159,6 @@ public class LibraryDAO {
 
                 bookList.add(list);
             }
-            ConnectionManager.closeConnection(rs, pstmt, con);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

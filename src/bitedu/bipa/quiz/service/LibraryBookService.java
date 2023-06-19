@@ -44,11 +44,11 @@ public class LibraryBookService {
 
     public void getUserInfo() {
         JSONObject obj = new JSONObject();
-    // 전체 도서 목록 - 안은비 추가
+        // 전체 도서 목록 - 안은비 추가
         JSONArray totalBookList = getBorrowListByUserId();
         obj.put("totalBookList", totalBookList);
 
-    // 전체반납목록
+        // 전체반납목록
         JSONArray totalReturnList = getTotalReturnList();
         obj.put("totalReturnList", totalReturnList);
 
@@ -73,8 +73,8 @@ public class LibraryBookService {
             jsonObject.put("book_seq", one.getBook_seq());
             jsonObject.put("book_title", one.getBook_title());
             jsonObject.put("book_author", one.getBook_author());
-            jsonObject.put("borrow_start", one.getBorrow_start());
-            jsonObject.put("borrow_end", one.getBorrow_end());
+            jsonObject.put("borrow_start", one.getBorrow_start().toString());
+            jsonObject.put("borrow_end", one.getBorrow_end().toString());
 
             jsonArray.add(jsonObject);
 
@@ -84,16 +84,16 @@ public class LibraryBookService {
     }
 
     // 전체 도서 목록 출력 - 안은비 추가
-    public JSONArray getBorrowListByUserId(){
+    public JSONArray getBorrowListByUserId() {
         ArrayList<ListDTO> lists = dao.selectBookListByUserId();
         JSONArray totals = new JSONArray();
-        for(ListDTO list: lists){
+        for (ListDTO list : lists) {
             JSONObject total = new JSONObject();
             total.put("book_seq", list.getBook_seq());
             total.put("book_title", list.getBook_title());
             total.put("book_author", list.getBook_author());
-            total.put("borrow_date", list.getBorrow_date());
-            total.put("return_date", list.getReturn_date());
+            total.put("borrow_start", list.getBorrow_start().toString());
+            total.put("borrow_end", list.getBorrow_end().toString());
 
             totals.add(total);
         }

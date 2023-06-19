@@ -44,7 +44,9 @@ public class LibraryBookService {
 
     public void getUserInfo() {
         JSONObject obj = new JSONObject();
-
+    // 전체 도서 목록 - 안은비 추가
+        JSONArray totalBookList = getBorrowListByUserId();
+        obj.put("totalBookList", totalBookList);
 
     // 전체반납목록
         JSONArray totalReturnList = getTotalReturnList();
@@ -81,4 +83,20 @@ public class LibraryBookService {
         return jsonArray;
     }
 
+    // 전체 도서 목록 출력 - 안은비 추가
+    public JSONArray getBorrowListByUserId(){
+        ArrayList<ListDTO> lists = dao.selectBookListByUserId();
+        JSONArray totals = new JSONArray();
+        for(ListDTO list: lists){
+            JSONObject total = new JSONObject();
+            total.put("book_seq", list.getBook_seq());
+            total.put("book_title", list.getBook_title());
+            total.put("book_author", list.getBook_author());
+            total.put("borrow_date", list.getBorrow_date());
+            total.put("return_date", list.getReturn_date());
+
+            totals.add(total);
+        }
+        return totals;
+    }
 }

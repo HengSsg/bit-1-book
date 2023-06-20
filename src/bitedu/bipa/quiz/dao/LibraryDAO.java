@@ -3,6 +3,7 @@ package bitedu.bipa.quiz.dao;
 import bitedu.bipa.quiz.ListDTO;
 import bitedu.bipa.quiz.dto.UserDTO;
 import bitedu.bipa.quiz.util.ConnectionManager;
+import bitedu.bipa.quiz.util.DatabaseConnection;
 import bitedu.bipa.quiz.vo.UserVO;
 
 import java.sql.Connection;
@@ -17,7 +18,7 @@ public class LibraryDAO {
 
 
     public LibraryDAO() {
-        this.con = ConnectionManager.getConnection();
+        this.con = DatabaseConnection.getInstance().getConnection();
     }
 
 
@@ -36,7 +37,6 @@ public class LibraryDAO {
             if (affectedCount > 0) {
                 flag = true;
             }
-            ConnectionManager.closeConnection(null, pstmt, con);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -58,7 +58,6 @@ public class LibraryDAO {
             if (affectedCount > 0) {
                 flag = true;
             }
-            ConnectionManager.closeConnection(null, pstmt, con);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -84,15 +83,11 @@ public class LibraryDAO {
                 userVO.setUserGrade(rs.getString("user_grade"));
                 userVO.setMaxBook(rs.getInt("max_book"));
                 userVO.setServiceStop(rs.getTimestamp("service_stop"));
-
             }
-
-
         } catch (SQLException e) {
 
         }
         return userVO;
-
     }
 
     // 전체반납목록
@@ -117,8 +112,6 @@ public class LibraryDAO {
                 listDTO.setBorrow_end(rs.getDate("borrow_end"));
                 list.add(listDTO);
             }
-
-
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -136,7 +129,6 @@ public class LibraryDAO {
 				+ "WHERE bs.user_id = ? AND bs.borrow_end < CURDATE() AND bs.return_date IS NULL";
 
 		try {
-
 			PreparedStatement pstmt = con.prepareStatement(sql);
 			pstmt.setString(1, "User1");
 			ResultSet rs = pstmt.executeQuery();
@@ -150,7 +142,6 @@ public class LibraryDAO {
 				listDTO.setBorrow_end(rs.getDate("borrow_end"));
 				list.add(listDTO);
 			}
-
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

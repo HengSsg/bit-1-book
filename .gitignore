@@ -33,6 +33,3 @@ front/data.json
 *.properties
 data/db.properties
 .idea/
-
-
-src/bitedu/bipa/quiz/util/

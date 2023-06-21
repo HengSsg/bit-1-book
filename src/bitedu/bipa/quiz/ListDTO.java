@@ -20,6 +20,9 @@ public class ListDTO {
         this.borrow_end = borrow_end;
     }
 
+    public void hahaah() {
+
+    }
     public int getBook_seq() {
         return book_seq;
     }

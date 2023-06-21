@@ -2,14 +2,21 @@ package bitedu.bipa.quiz.util;
 
 import java.io.IOException;
 import java.io.InputStream;
+
 import java.sql.*;
 import java.util.Properties;
 
 public class ConnectionManager2 {
-    public static Connection connection;
+    private static Connection conn = null;
 
-    public static Connection getConnection() {
-        Connection con = ConnectionManager2.connection;
+    public ConnectionManager2 (){
+        if(conn == null){
+            conn = createConnection();
+        }
+    }
+
+    private Connection createConnection() {
+        Connection con = ConnectionManager2.conn;
 
             Properties prop = new Properties();
 
@@ -33,6 +40,10 @@ public class ConnectionManager2 {
 
 
         return con;
+    }
+
+    public static Connection getConnection() {
+        return conn;
     }
 
     public static void closeConnection(ResultSet rs, Statement stmt, Connection con) {

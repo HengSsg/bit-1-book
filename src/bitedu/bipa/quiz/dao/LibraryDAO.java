@@ -163,13 +163,13 @@ public class LibraryDAO {
     public ArrayList<ListDTO> selectBookListByUserId(String userId){
         ArrayList<ListDTO> bookList = new ArrayList<>();
 
-        String sql = "SELECT BC.BOOK_SEQ, BI.BOOK_TITLE, BI.BOOK_AUTHOR, DATE(BS.BORROW_START), DATE(BS.BORROW_END)\n" +
-                "FROM BOOK_USE_STATUS BS\n" +
-                "JOIN BOOK_COPY BC\n" +
-                "ON ( BS.BOOK_SEQ = BC.BOOK_SEQ) \n" +
-                "JOIN BOOK_INFO BI\n" +
-                "ON (BC.BOOK_ISBN = BI.BOOK_ISBN) \n" +
-                "WHERE BS.USER_ID = ? ";
+        String sql = "SELECT BC.book_seq, BI.book_title, BI.book_author, DATE(BS.borrow_start), DATE(BS.borrow_end)\n" +
+                "FROM book_use_status BS\n" +
+                "JOIN book_copy BC\n" +
+                "ON ( BS.book_seq = BC.book_seq) \n" +
+                "JOIN book_info BI\n" +
+                "ON (BC.book_isbn = BI.book_isbn) \n" +
+                "WHERE BS.user_id = ? ";
 
         try {
             PreparedStatement pstmt = con.prepareStatement(sql);

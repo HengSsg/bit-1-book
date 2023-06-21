@@ -11,7 +11,7 @@ public class ConnectionManager {
         Connection con = null;
 
         Properties prop = new Properties();
-        try (FileInputStream fileInputStream = new FileInputStream("front/db.properties")) {
+        try (FileInputStream fileInputStream = new FileInputStream("/Users/jimin/workspace/bit/bit-1-book/front/db.properties")) {
             prop.load(fileInputStream);
             String jdbcURL = prop.getProperty("jdbcURL");
             String driver = prop.getProperty("driver");

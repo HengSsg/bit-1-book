@@ -26,11 +26,19 @@
       div {
         margin-bottom: 20px;
       }
+      .func{
+      position: relative;
+        text-align: center;
+        margin: 10px 150px;
+      }
     </style>
     <script src="https://code.jquery.com/jquery-latest.min.js"></script>
   </head>
   <body>
-    <span><button onclick="list()">user1 도서현황보기</button></span>
+    <span>
+      <input type="text" placeholder="Input user ID" id="userIdInput">
+      <button onclick="list()">도서현황조회</button>
+    </span>
     <div id="container">
       <div>
         <table id="user_status">
@@ -94,7 +102,13 @@
             <td>반납일자</td>
           </tr>
         </table>
+        <div class="func">
+          <input type="text" placeholder="Input book number" id="bookNumInput">
+          <button id="borrowBtn" onclick="borrowFunc()">대출</button>
+          <button id="returnBtn" onclick="returnFunc()">반납</button>
+        </div>
       </div>
+
     </div>
     <script src="library_front.js"></script>
   </body>

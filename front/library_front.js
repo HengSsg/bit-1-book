@@ -5,12 +5,60 @@ const totexpecting_returnal = document.getElementById("expecting_return");
 
 const user_status = document.getElementById("user_status");
 
-function list() {
+const userIdInput = document.getElementById("userIdInput");
+const bookNumberInput = document.getElementById("bookNumInput");
+
+const borrowButton = document.getElementById("burrowBtn");
+const returnButton = document.getElementById("returnBtn");
+
+
+function borrowFunc(){
   $.ajax({
-    url: "data.json",
+    url: `http://localhost:8080/borrow?userId=${userIdInput.value}&bookNum=${bookNumberInput.value}`,
     type: "GET",
     dataType: "json",
     success: function (data) {
+      console.log(data);
+      let borrowResult = data.result;
+      console.log(borrowResult);
+      if(borrowResult){
+        alert("대출 성공");
+        list();
+      }else{
+        alert("코드를 다시 작성하세요");
+      }
+    }
+  });
+}
+
+function returnFunc(){
+  $.ajax({
+    url: `http://localhost:8080/return?userId=${userIdInput.value}&bookNum=${bookNumberInput.value}`,
+    type: "GET",
+    dataType: "json",
+    success: function (data) {
+      console.log(data);
+      let borrowResult = data.result;
+      console.log(borrowResult);
+      if(borrowResult){
+        alert("반납 성공");
+        list();
+      }else{
+        alert("코드를 다시 작성하세요");
+      }
+    }
+  });
+}
+
+
+function list() {
+  $.ajax({
+    url: `http://localhost:8080/info?userId=${userIdInput.value}`,
+    type: "GET",
+    dataType: "json",
+    success: function (data) {
+      console.log(data.userData);
+          
       user_status.innerHTML = `
       <tr>
             <td>대출도서</td>
@@ -22,13 +70,23 @@ function list() {
             <td>대출정지기간</td>
           </tr>
           <tr>
-        <td>${data.userData.rentNum}</td>
-        <td>${data.userData.returnNum}</td>
-        <td>${data.userData.noReturnNum}</td>
-        <td>${data.userData.soonReturnNum}</td>
-        <td>${data.userData.availRentNum}</td>
-        <td>${data.userData.status}</td>
-        <td>${data.userData.stopPeriod}</td>
+        <td>${data.userData.totalBookList.length}</td>
+        <td>${data.userData.totalReturnList.length}</td>
+        <td>${data.userData.OverdueBookList.length}</td>
+        <td>${data.userData.soonReturnList.length}</td>
+        <td>${
+          data.userData.totalUserInfo[0].maxBook
+        }</td>
+        <td>${
+          data.userData.totalUserInfo[0].status === "00"
+            ? "사용가능"
+            : "사용불가"
+        }</td>
+        <td>${
+          data.userData.totalUserInfo.serviceStop == null
+            ? "-"
+            : data.userData.totalUserInfo.serviceStop
+        }</td>
     </tr>`;
 
       total.innerHTML = `<tr>
@@ -64,6 +122,8 @@ function list() {
             <td>${data.userData.totalReturnList[i].borrow_end}</td>
         </tr>`;
       }
+
+      // 미반납도서
       not_returned.innerHTML = `
       <tr>
             <td>도서번호</td>
@@ -72,13 +132,13 @@ function list() {
             <td>대출일자</td>
             <td>반납일자</td>
           </tr>`;
-      for (let i = 0; i < data.userData.noReturnList.length; i++) {
+      for (let i = 0; i < data.userData.OverdueBookList.length; i++) {
         not_returned.innerHTML += `<tr>
-              <td>${data.userData.noReturnList[i].book_seq}</td>
-              <td>${data.userData.noReturnList[i].book_title}</td>
-              <td>${data.userData.noReturnList[i].book_author}</td>
-              <td>${data.userData.noReturnList[i].borrow_start}</td>
-              <td>${data.userData.noReturnList[i].borrow_end}</td>
+              <td>${data.userData.OverdueBookList[i].book_seq}</td>
+              <td>${data.userData.OverdueBookList[i].book_title}</td>
+              <td>${data.userData.OverdueBookList[i].book_author}</td>
+              <td>${data.userData.OverdueBookList[i].borrow_start}</td>
+              <td>${data.userData.OverdueBookList[i].borrow_end}</td>
           </tr>`;
       }
       totexpecting_returnal.innerHTML = `<tr>

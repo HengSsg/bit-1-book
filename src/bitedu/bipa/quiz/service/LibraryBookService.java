@@ -44,44 +44,36 @@ public class LibraryBookService {
 
     }
 
-    public void getUserInfo() {
+    public JSONObject getUserInfo(String userId) {
         JSONObject result = new JSONObject();
         JSONObject obj = new JSONObject();
         // 전체 도서 목록 - 안은비 추가
-        JSONArray totalBookList = getBorrowListByUserId();
+        JSONArray totalBookList = getBorrowListByUserId(userId);
         obj.put("totalBookList", totalBookList);
 
         // 전체반납목록 - 박형석 추가
-        JSONArray totalReturnList = getTotalReturnList();
+        JSONArray totalReturnList = getTotalReturnList(userId);
         obj.put("totalReturnList", totalReturnList);
 
-        JSONArray OverdueBookList = getOverdueBookListByUserId();
+        JSONArray OverdueBookList = getOverdueBookListByUserId(userId);
         obj.put("OverdueBookList", OverdueBookList);
 
         //반납 예정 목록 추가
-        JSONArray returnList = getReturnList();
+        JSONArray returnList = getReturnList(userId);
         obj.put("soonReturnList", returnList);
 
         //사용자 정보 - 이지민
-        JSONArray totalUserInfo = getTotalUserInfo();
+        JSONArray totalUserInfo = getTotalUserInfo(userId);
         obj.put("totalUserInfo", totalUserInfo);
 
+        result.put("userData",obj);
 
-        try (FileWriter file = new FileWriter("front/data.json")) {
-            result.put("userData",obj);
-
-            file.write(result.toJSONString());
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-
+        return result;
     }
 
     // 전체반납목록
-    public JSONArray getTotalReturnList() {
-        ArrayList<ListDTO> list = dao.totalReturnList();
+    public JSONArray getTotalReturnList(String userId) {
+        ArrayList<ListDTO> list = dao.totalReturnList(userId);
 
         JSONArray jsonArray = new JSONArray();
         for (ListDTO one : list) {
@@ -101,8 +93,8 @@ public class LibraryBookService {
     }
     
 	// 반납예정목록 
-	public JSONArray getReturnList() {
-		ArrayList<ListDTO> returnlist = dao.returnList();
+	public JSONArray getReturnList(String userId) {
+		ArrayList<ListDTO> returnlist = dao.returnList(userId);
 
 		JSONArray jsonArray = new JSONArray();
 
@@ -122,8 +114,8 @@ public class LibraryBookService {
 	}
 
     // 전체 도서 목록 출력 - 안은비 추가
-    public JSONArray getBorrowListByUserId() {
-        ArrayList<ListDTO> lists = dao.selectBookListByUserId();
+    public JSONArray getBorrowListByUserId(String userId) {
+        ArrayList<ListDTO> lists = dao.selectBookListByUserId(userId);
         JSONArray totals = new JSONArray();
         for (ListDTO list : lists) {
             JSONObject total = new JSONObject();
@@ -138,8 +130,8 @@ public class LibraryBookService {
         return totals;
     }
 
-    public JSONArray getTotalUserInfo() {
-        UserDTO dto = dao.selectBookInfoByUser();
+    public JSONArray getTotalUserInfo(String userId) {
+        UserDTO dto = dao.selectBookInfoByUser(userId);
 
         JSONObject innerJO = new JSONObject();
         JSONArray totalUser = new JSONArray();
@@ -153,8 +145,8 @@ public class LibraryBookService {
         return totalUser;
     }
     // 미반납 도서 목록 출력 - 김선규 추가
-    public JSONArray getOverdueBookListByUserId() {
-        ArrayList<ListDTO> lists = dao.getOverdueBookListByUserId();
+    public JSONArray getOverdueBookListByUserId(String userId) {
+        ArrayList<ListDTO> lists = dao.getOverdueBookListByUserId(userId);
         JSONArray totals = new JSONArray();
         for (ListDTO list : lists) {
             JSONObject total = new JSONObject();
@@ -169,10 +161,14 @@ public class LibraryBookService {
         return totals;
     }
 
-    public void borrowBook(String bookNum, String userId) throws SQLException {
-        dao.insertBookBorrow(bookNum, userId);
+    public JSONObject borrowBook(String bookNum, String userId) throws SQLException {
+        JSONObject jo = new JSONObject();
+        jo.put("result", dao.insertBookBorrow(bookNum, userId));
+        return jo;
     }
-    public void returnBook(String bookNum, String userId) throws SQLException {
-        dao.updateBookReturn(bookNum, userId);
+    public JSONObject returnBook(String bookNum, String userId) throws SQLException {
+        JSONObject jo = new JSONObject();
+        jo.put("result", dao.updateBookReturn(bookNum, userId));
+        return jo;
     }
 }

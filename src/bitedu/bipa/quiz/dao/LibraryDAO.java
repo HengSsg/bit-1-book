@@ -98,7 +98,7 @@ public class LibraryDAO {
     }
 
     // 전체반납목록
-    public ArrayList<ListDTO> totalReturnList() {
+    public ArrayList<ListDTO> totalReturnList(String userId) {
         ArrayList<ListDTO> list = new ArrayList<>();
         String sql = "SELECT bs.book_seq, bi.book_title, bi.book_author, bs.borrow_start, bs.borrow_end\n" +
                 "FROM book_info bi\n" +
@@ -108,7 +108,7 @@ public class LibraryDAO {
 
         try {
             PreparedStatement pstmt = con.prepareStatement(sql);
-            pstmt.setString(1, "User1");
+            pstmt.setString(1, userId);
             ResultSet rs = pstmt.executeQuery();
             while (rs.next()) {
                 ListDTO listDTO = new ListDTO();
@@ -129,7 +129,7 @@ public class LibraryDAO {
     }
     
 	// 반납예정목록
-	public ArrayList<ListDTO> returnList() {
+	public ArrayList<ListDTO> returnList(String userId) {
 		ArrayList<ListDTO> list = new ArrayList<>();
 
 		String sql = "SELECT bs.book_seq, bi.book_title, bi.book_author, bs.borrow_start, bs.borrow_end "
@@ -140,7 +140,7 @@ public class LibraryDAO {
 		try {
 
 			PreparedStatement pstmt = con.prepareStatement(sql);
-			pstmt.setString(1, "User1");
+			pstmt.setString(1, userId);
 			ResultSet rs = pstmt.executeQuery();
 
 			while (rs.next()) {
@@ -160,7 +160,7 @@ public class LibraryDAO {
 	}
 
     // 전체 도서목록 - 안은비 추가
-    public ArrayList<ListDTO> selectBookListByUserId(){
+    public ArrayList<ListDTO> selectBookListByUserId(String userId){
         ArrayList<ListDTO> bookList = new ArrayList<>();
 
         String sql = "SELECT BC.BOOK_SEQ, BI.BOOK_TITLE, BI.BOOK_AUTHOR, DATE(BS.BORROW_START), DATE(BS.BORROW_END)\n" +
@@ -173,7 +173,7 @@ public class LibraryDAO {
 
         try {
             PreparedStatement pstmt = con.prepareStatement(sql);
-            pstmt.setString(1,"User1");
+            pstmt.setString(1,userId);
             ResultSet rs = pstmt.executeQuery();
             while(rs.next()) {
                 ListDTO list = new ListDTO();
@@ -192,7 +192,7 @@ public class LibraryDAO {
     }
     
     // 미반납 도석 목록 - 김선규 추가
-    public ArrayList<ListDTO> getOverdueBookListByUserId(){
+    public ArrayList<ListDTO> getOverdueBookListByUserId(String userId){
         ArrayList<ListDTO> bookList = new ArrayList<>();
 
         String sql = "SELECT book_use_status.book_seq, book_info.book_title, book_info.book_author, book_use_status.borrow_start, book_use_status.borrow_end\n"
@@ -203,7 +203,7 @@ public class LibraryDAO {
 
         try {
             PreparedStatement pstmt = con.prepareStatement(sql);
-            pstmt.setString(1,"User1");
+            pstmt.setString(1,userId);
             ResultSet rs = pstmt.executeQuery();
             while(rs.next()) {
                 ListDTO list = new ListDTO();
@@ -221,9 +221,9 @@ public class LibraryDAO {
         return bookList;
     }
 
-    public UserDTO selectBookInfoByUser() {
+    public UserDTO selectBookInfoByUser(String userId) {
         UserDTO dto = new UserDTO();
-        String sql = "select user_status, max_book, service_stop from book_user where user_id='user1'";
+        String sql = "select user_status, max_book, service_stop from book_user where user_id='"+userId+"';";
         PreparedStatement ps = null;
         try {
             ps = this.con.prepareStatement(sql);

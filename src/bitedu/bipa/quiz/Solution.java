@@ -23,7 +23,7 @@ public class Solution {
 	public void getUserInfo(String userId) throws IOException {
 		// 도서이용현황에 대한 정보를 가져와서
 		LibraryBookService service = new LibraryBookService();
-		service.getUserInfo();
+		service.getUserInfo(userId);
 	}
 
 	public void borrowFunc(String bookNum, String userId) throws SQLException {

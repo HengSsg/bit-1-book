@@ -168,4 +168,11 @@ public class LibraryBookService {
         }
         return totals;
     }
+
+    public void borrowBook(String bookNum, String userId) throws SQLException {
+        dao.insertBookBorrow(bookNum, userId);
+    }
+    public void returnBook(String bookNum, String userId) throws SQLException {
+        dao.updateBookReturn(bookNum, userId);
+    }
 }

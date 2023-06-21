@@ -9,6 +9,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 
 public class LibraryDAO {
@@ -235,5 +237,107 @@ public class LibraryDAO {
             throw new RuntimeException(e);
         }
         return dto;
+    }
+
+
+    public boolean insertBookBorrow(String bookNum, String userId) throws SQLException {
+        PreparedStatement ps = null;
+        StringBuilder updateBookStateSQLBuilder = new StringBuilder();
+        updateBookStateSQLBuilder.append("update book_copy set book_position = 'BB-");
+        updateBookStateSQLBuilder.append(userId);
+        updateBookStateSQLBuilder.append("' where book_seq = ?;");
+
+        String insertBorrowSQL = "insert into book_use_status(book_seq,user_id,borrow_start,borrow_end) values(?, ?, ?, ?);";
+        String updateBookStateSQL = updateBookStateSQLBuilder.toString();
+        String updateUserStateSQL = "update book_user set max_book = max_book - 1 where user_id = ?;";
+
+        try {
+            this.con.setAutoCommit(false);
+
+            //책 대여 기록 입력
+            LocalDate curDate = LocalDate.now();
+            LocalDate returnDate = getReturnDate(curDate);
+
+            ps = this.con.prepareStatement(insertBorrowSQL);
+            ps.setString(1, bookNum);
+            ps.setString(2, userId);
+            ps.setString(3, curDate.toString());
+            ps.setString(4, returnDate.toString());
+            int insertBorrowResult = ps.executeUpdate();
+            if(insertBorrowResult < 1) {
+                return false;
+            }
+
+            //책 상태 변경
+            ps = this.con.prepareStatement(updateBookStateSQL);
+            ps.setString(1, bookNum);
+            int updateBookStateResult = ps.executeUpdate();
+            if(updateBookStateResult < 1) {
+                return false;
+            }
+
+            //사용자 상태 변경
+            ps = this.con.prepareStatement(updateUserStateSQL);
+            ps.setString(1, userId);
+            int updateUserStateResult = ps.executeUpdate();
+            if(updateUserStateResult < 1) {
+                return false;
+            }
+        } catch (SQLException e) {
+            this.con.rollback();
+        } finally {
+            this.con.setAutoCommit(true);
+        }
+        return true;
+    }
+
+    public boolean updateBookReturn(String bookNum, String userId) throws SQLException {
+        PreparedStatement ps = null;
+
+        String updateBorrowSQL = "update book_use_status set return_date = ? where user_id = ? and book_seq = ?;";
+        String updateBookStateSQL = "update book_copy set book_position = 'BS-0001' where book_seq = ?;";
+        String updateUserStateSQL = "update book_user set max_book = max_book + 1 where user_id = ?;";
+
+        try {
+            this.con.setAutoCommit(false);
+
+            //책 대여 기록 입력
+            LocalDate curDate = LocalDate.now();
+
+            ps = this.con.prepareStatement(updateBorrowSQL);
+            ps.setString(1, curDate.toString());
+            ps.setString(2, userId);
+            ps.setString(3, bookNum);
+            int updateBorrowResult = ps.executeUpdate();
+            if(updateBorrowResult < 1) {
+                return false;
+            }
+
+            //책 상태 변경
+            ps = this.con.prepareStatement(updateBookStateSQL);
+            ps.setString(1, bookNum);
+            int updateBookStateResult = ps.executeUpdate();
+            if(updateBookStateResult < 1) {
+                return false;
+            }
+
+            //사용자 상태 변경
+            ps = this.con.prepareStatement(updateUserStateSQL);
+            ps.setString(1, userId);
+            int updateUserStateResult = ps.executeUpdate();
+            if(updateUserStateResult < 1) {
+                return false;
+            }
+        } catch (SQLException e) {
+                this.con.rollback();
+        }   finally {
+                this.con.setAutoCommit(true);
+        }
+        return true;
+    }
+
+    private LocalDate getReturnDate(LocalDate date) {
+        LocalDate returnDate = date.plus(14, ChronoUnit.DAYS);
+        return returnDate;
     }
 }

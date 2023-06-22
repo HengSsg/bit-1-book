@@ -3,6 +3,7 @@ package bitedu.bipa.quiz.dao;
 import bitedu.bipa.quiz.ListDTO;
 import bitedu.bipa.quiz.dto.UserDTO;
 import bitedu.bipa.quiz.util.ConnectionManager;
+import bitedu.bipa.quiz.vo.UseStatus;
 import bitedu.bipa.quiz.vo.UserVO;
 
 import java.sql.Connection;
@@ -12,6 +13,7 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class LibraryDAO {
 
@@ -23,79 +25,79 @@ public class LibraryDAO {
     }
 
 
-    // 도서 대출
-    public boolean insertBookUseState(int book_seq, String user_id, String borrow_start, String borrow_end) {
-        boolean flag = false;
-        String sql = "insert into book_use_status(book_seq, user_id, borrow_start, borrow_end) values(?, ?, ?, ?);";
-
-        try {
-            PreparedStatement pstmt = con.prepareStatement(sql);
-            pstmt.setInt(1, book_seq);
-            pstmt.setString(2, user_id);
-            pstmt.setString(3, borrow_start);
-            pstmt.setString(4, borrow_end);
-            int affectedCount = pstmt.executeUpdate();
-            if (affectedCount > 0) {
-                flag = true;
-            }
-            ConnectionManager.closeConnection(null, pstmt, con);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return flag;
-    }
-
-
-    // 도서 반납
-    public boolean updateBookUseState(int book_seq, String user_id, String return_date) {
-        boolean flag = false;
-        String sql = "update book_use_status set return_date=? where user_id=? and book_seq=?;";
-
-        try {
-            PreparedStatement pstmt = con.prepareStatement(sql);
-            pstmt.setString(2, user_id);
-            pstmt.setString(1, return_date);
-            pstmt.setInt(3, book_seq);
-            int affectedCount = pstmt.executeUpdate();
-            if (affectedCount > 0) {
-                flag = true;
-            }
-            ConnectionManager.closeConnection(null, pstmt, con);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return flag;
-    }
-
-    public UserVO selectUser(String user_id) {
-        UserVO userVO = null;
-        String sql = "select * from book_user where user_id=?;";
-
-        try {
-            PreparedStatement pstmt = con.prepareStatement(sql);
-            pstmt.setString(1, user_id);
-            ResultSet rs = pstmt.executeQuery();
-            userVO = new UserVO();
-            while (rs.next()) {
-
-                userVO.setUserSeq(rs.getInt("user_seq"));
-                userVO.setUserId(rs.getString("user_id"));
-                userVO.setUserPass(rs.getString("user_pass"));
-                userVO.setUserPhoneNumber(rs.getString("user_phone_number"));
-                userVO.setUserState(rs.getString("user_status"));
-                userVO.setUserGrade(rs.getString("user_grade"));
-                userVO.setMaxBook(rs.getInt("max_book"));
-                userVO.setServiceStop(rs.getTimestamp("service_stop"));
-
-            }
-
-
-        } catch (SQLException e) {
-
-        }
-        return userVO;
-
-    }
+//    // 도서 대출
+//    public boolean insertBookUseState(int book_seq, String user_id, String borrow_start, String borrow_end) {
+//        boolean flag = false;
+//        String sql = "insert into book_use_status(book_seq, user_id, borrow_start, borrow_end) values(?, ?, ?, ?);";
+//
+//        try {
+//            PreparedStatement pstmt = con.prepareStatement(sql);
+//            pstmt.setInt(1, book_seq);
+//            pstmt.setString(2, user_id);
+//            pstmt.setString(3, borrow_start);
+//            pstmt.setString(4, borrow_end);
+//            int affectedCount = pstmt.executeUpdate();
+//            if (affectedCount > 0) {
+//                flag = true;
+//            }
+//            ConnectionManager.closeConnection(null, pstmt, con);
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        }
+//        return flag;
+//    }
+//
+//
+//    // 도서 반납
+//    public boolean updateBookUseState(int book_seq, String user_id, String return_date) {
+//        boolean flag = false;
+//        String sql = "update book_use_status set return_date=? where user_id=? and book_seq=?;";
+//
+//        try {
+//            PreparedStatement pstmt = con.prepareStatement(sql);
+//            pstmt.setString(2, user_id);
+//            pstmt.setString(1, return_date);
+//            pstmt.setInt(3, book_seq);
+//            int affectedCount = pstmt.executeUpdate();
+//            if (affectedCount > 0) {
+//                flag = true;
+//            }
+//            ConnectionManager.closeConnection(null, pstmt, con);
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        }
+//        return flag;
+//    }
+//
+//    public UserVO selectUser(String user_id) {
+//        UserVO userVO = null;
+//        String sql = "select * from book_user where user_id=?;";
+//
+//        try {
+//            PreparedStatement pstmt = con.prepareStatement(sql);
+//            pstmt.setString(1, user_id);
+//            ResultSet rs = pstmt.executeQuery();
+//            userVO = new UserVO();
+//            while (rs.next()) {
+//
+//                userVO.setUserSeq(rs.getInt("user_seq"));
+//                userVO.setUserId(rs.getString("user_id"));
+//                userVO.setUserPass(rs.getString("user_pass"));
+//                userVO.setUserPhoneNumber(rs.getString("user_phone_number"));
+//                userVO.setUserState(rs.getString("user_status"));
+//                userVO.setUserGrade(rs.getString("user_grade"));
+//                userVO.setMaxBook(rs.getInt("max_book"));
+//                userVO.setServiceStop(rs.getTimestamp("service_stop"));
+//
+//            }
+//
+//
+//        } catch (SQLException e) {
+//
+//        }
+//        return userVO;
+//
+//    }
 
     // 전체반납목록
     public ArrayList<ListDTO> totalReturnList(String userId) {
@@ -127,40 +129,40 @@ public class LibraryDAO {
 
         return list;
     }
-    
-	// 반납예정목록
-	public ArrayList<ListDTO> returnList(String userId) {
-		ArrayList<ListDTO> list = new ArrayList<>();
 
-		String sql = "SELECT bs.book_seq, bi.book_title, bi.book_author, bs.borrow_start, bs.borrow_end "
-				+ "FROM book_info bi " + "JOIN book_copy bc ON bi.book_isbn = bc.book_isbn "
-				+ "JOIN book_use_status bs ON bs.book_seq = bc.book_seq "
-				+ "WHERE bs.user_id = ? AND bs.borrow_end < CURDATE() AND bs.return_date IS NULL";
+    // 반납예정목록
+    public ArrayList<ListDTO> returnList(String userId) {
+        ArrayList<ListDTO> list = new ArrayList<>();
 
-		try {
+        String sql = "SELECT bs.book_seq, bi.book_title, bi.book_author, bs.borrow_start, bs.borrow_end "
+                + "FROM book_info bi " + "JOIN book_copy bc ON bi.book_isbn = bc.book_isbn "
+                + "JOIN book_use_status bs ON bs.book_seq = bc.book_seq "
+                + "WHERE bs.user_id = ? AND bs.borrow_end > CURDATE() AND bs.return_date IS NULL";
 
-			PreparedStatement pstmt = con.prepareStatement(sql);
-			pstmt.setString(1, userId);
-			ResultSet rs = pstmt.executeQuery();
+        try {
 
-			while (rs.next()) {
-				ListDTO listDTO = new ListDTO();
-				listDTO.setBook_seq(rs.getInt("book_seq"));
-				listDTO.setBook_title(rs.getString("book_title"));
-				listDTO.setBook_author(rs.getString("book_author"));
-				listDTO.setBorrow_start(rs.getDate("borrow_start"));
-				listDTO.setBorrow_end(rs.getDate("borrow_end"));
-				list.add(listDTO);
-			}
+            PreparedStatement pstmt = con.prepareStatement(sql);
+            pstmt.setString(1, userId);
+            ResultSet rs = pstmt.executeQuery();
 
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return list;
-	}
+            while (rs.next()) {
+                ListDTO listDTO = new ListDTO();
+                listDTO.setBook_seq(rs.getInt("book_seq"));
+                listDTO.setBook_title(rs.getString("book_title"));
+                listDTO.setBook_author(rs.getString("book_author"));
+                listDTO.setBorrow_start(rs.getDate("borrow_start"));
+                listDTO.setBorrow_end(rs.getDate("borrow_end"));
+                list.add(listDTO);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
 
     // 전체 도서목록 - 안은비 추가
-    public ArrayList<ListDTO> selectBookListByUserId(String userId){
+    public ArrayList<ListDTO> selectBookListByUserId(String userId) {
         ArrayList<ListDTO> bookList = new ArrayList<>();
 
         String sql = "SELECT BC.book_seq, BI.book_title, BI.book_author, DATE(BS.borrow_start), DATE(BS.borrow_end)\n" +
@@ -173,15 +175,15 @@ public class LibraryDAO {
 
         try {
             PreparedStatement pstmt = con.prepareStatement(sql);
-            pstmt.setString(1,userId);
+            pstmt.setString(1, userId);
             ResultSet rs = pstmt.executeQuery();
-            while(rs.next()) {
+            while (rs.next()) {
                 ListDTO list = new ListDTO();
                 list.setBook_seq(rs.getInt(1));
-                list.setBook_title( rs.getString(2));
+                list.setBook_title(rs.getString(2));
                 list.setBook_author(rs.getString(3));
                 list.setBorrow_start(rs.getDate(4));
-                list.setBorrow_end( rs.getDate(5));
+                list.setBorrow_end(rs.getDate(5));
 
                 bookList.add(list);
             }
@@ -190,28 +192,28 @@ public class LibraryDAO {
         }
         return bookList;
     }
-    
+
     // 미반납 도석 목록 - 김선규 추가
-    public ArrayList<ListDTO> getOverdueBookListByUserId(String userId){
+    public ArrayList<ListDTO> getOverdueBookListByUserId(String userId) {
         ArrayList<ListDTO> bookList = new ArrayList<>();
 
         String sql = "SELECT book_use_status.book_seq, book_info.book_title, book_info.book_author, book_use_status.borrow_start, book_use_status.borrow_end\n"
-    			+ "FROM book_use_status\n"
-    			+ "INNER JOIN book_copy ON book_use_status.book_seq = book_copy.book_seq\n"
-    			+ "INNER JOIN book_info ON book_copy.book_isbn = book_info.book_isbn\n"
-    			+ "where book_use_status.borrow_end < curdate() and book_use_status.return_date IS NULL and book_use_status.user_id = ?";
+                + "FROM book_use_status\n"
+                + "INNER JOIN book_copy ON book_use_status.book_seq = book_copy.book_seq\n"
+                + "INNER JOIN book_info ON book_copy.book_isbn = book_info.book_isbn\n"
+                + "where book_use_status.borrow_end < curdate() and book_use_status.return_date IS NULL and book_use_status.user_id = ?";
 
         try {
             PreparedStatement pstmt = con.prepareStatement(sql);
-            pstmt.setString(1,userId);
+            pstmt.setString(1, userId);
             ResultSet rs = pstmt.executeQuery();
-            while(rs.next()) {
+            while (rs.next()) {
                 ListDTO list = new ListDTO();
                 list.setBook_seq(rs.getInt(1));
-                list.setBook_title( rs.getString(2));
+                list.setBook_title(rs.getString(2));
                 list.setBook_author(rs.getString(3));
                 list.setBorrow_start(rs.getDate(4));
-                list.setBorrow_end( rs.getDate(5));
+                list.setBorrow_end(rs.getDate(5));
 
                 bookList.add(list);
             }
@@ -223,12 +225,12 @@ public class LibraryDAO {
 
     public UserDTO selectBookInfoByUser(String userId) {
         UserDTO dto = new UserDTO();
-        String sql = "select user_status, max_book, service_stop from book_user where user_id='"+userId+"';";
+        String sql = "select user_status, max_book, service_stop from book_user where user_id='" + userId + "';";
         PreparedStatement ps = null;
         try {
             ps = this.con.prepareStatement(sql);
             ResultSet rs = ps.executeQuery();
-            if(rs.next()) {
+            if (rs.next()) {
                 dto.setStatus(rs.getString(1));
                 dto.setMaxBook(rs.getInt(2));
                 dto.setServiceStop(rs.getDate(3));
@@ -264,7 +266,7 @@ public class LibraryDAO {
             ps.setString(3, curDate.toString());
             ps.setString(4, returnDate.toString());
             int insertBorrowResult = ps.executeUpdate();
-            if(insertBorrowResult < 1) {
+            if (insertBorrowResult < 1) {
                 return false;
             }
 
@@ -272,7 +274,7 @@ public class LibraryDAO {
             ps = this.con.prepareStatement(updateBookStateSQL);
             ps.setString(1, bookNum);
             int updateBookStateResult = ps.executeUpdate();
-            if(updateBookStateResult < 1) {
+            if (updateBookStateResult < 1) {
                 return false;
             }
 
@@ -280,7 +282,7 @@ public class LibraryDAO {
             ps = this.con.prepareStatement(updateUserStateSQL);
             ps.setString(1, userId);
             int updateUserStateResult = ps.executeUpdate();
-            if(updateUserStateResult < 1) {
+            if (updateUserStateResult < 1) {
                 return false;
             }
         } catch (SQLException e) {
@@ -309,7 +311,7 @@ public class LibraryDAO {
             ps.setString(2, userId);
             ps.setString(3, bookNum);
             int updateBorrowResult = ps.executeUpdate();
-            if(updateBorrowResult < 1) {
+            if (updateBorrowResult < 1) {
                 return false;
             }
 
@@ -317,7 +319,7 @@ public class LibraryDAO {
             ps = this.con.prepareStatement(updateBookStateSQL);
             ps.setString(1, bookNum);
             int updateBookStateResult = ps.executeUpdate();
-            if(updateBookStateResult < 1) {
+            if (updateBookStateResult < 1) {
                 return false;
             }
 
@@ -325,13 +327,13 @@ public class LibraryDAO {
             ps = this.con.prepareStatement(updateUserStateSQL);
             ps.setString(1, userId);
             int updateUserStateResult = ps.executeUpdate();
-            if(updateUserStateResult < 1) {
+            if (updateUserStateResult < 1) {
                 return false;
             }
         } catch (SQLException e) {
-                this.con.rollback();
-        }   finally {
-                this.con.setAutoCommit(true);
+            this.con.rollback();
+        } finally {
+            this.con.setAutoCommit(true);
         }
         return true;
     }
@@ -339,5 +341,76 @@ public class LibraryDAO {
     private LocalDate getReturnDate(LocalDate date) {
         LocalDate returnDate = date.plus(14, ChronoUnit.DAYS);
         return returnDate;
+    }
+
+    public UserVO selectUser(String userId) {
+        String sql = "select * from book_user where user_id = ?;";
+        UserVO userVO = new UserVO();
+
+        try {
+            PreparedStatement pstmt = this.con.prepareStatement(sql);
+            pstmt.setString(1, userId);
+            ResultSet rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+                userVO.setUserSeq(rs.getInt("user_seq"));
+                userVO.setUserId(rs.getString("user_id"));
+                userVO.setUserState(rs.getString("user_status"));
+                userVO.setMaxBook(rs.getInt("max_book"));
+                userVO.setServiceStop(rs.getTimestamp("service_stop"));
+            }
+
+            rs.close();
+            pstmt.close();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return userVO;
+
+    }
+
+    public UseStatus selectUseStatus(int book_seq, String userId) {
+        UseStatus useStatus = new UseStatus();
+        String sql = "select * from book_use_status where user_id = ? and book_seq = ?";
+
+        try {
+            PreparedStatement pstmt = this.con.prepareStatement(sql);
+            pstmt.setString(1, userId);
+            pstmt.setInt(2, book_seq);
+            ResultSet rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+                useStatus.setBook_seq(rs.getInt("book_seq"));
+                useStatus.setUser_id(rs.getString("user_id"));
+                useStatus.setBorrow_start(rs.getDate("borrow_start"));
+                useStatus.setBorrow_end(rs.getDate("borrow_end"));
+                useStatus.setReturn_date(rs.getDate("return_date"));
+
+            }
+
+            rs.close();
+            pstmt.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return useStatus;
+    }
+
+    public void updateReturnDate(Date date, String userId) {
+        String sql = "update book_user set service_stop = ? where user_id = ?;";
+        java.sql.Date sqlDate = new java.sql.Date(date.getTime());
+
+        try {
+            PreparedStatement pstmt = this.con.prepareStatement(sql);
+            pstmt.setDate(1, sqlDate);
+            pstmt.setString(2, userId);
+            pstmt.executeUpdate();
+
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 }

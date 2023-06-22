@@ -33,3 +33,4 @@ front/data.json
 *.properties
 data/db.properties
 .idea/
+*.iml

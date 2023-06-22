@@ -262,12 +262,11 @@ public class LibraryBookService {
         if (end.compareTo(returned) < 0) {
             long diffInMilliSec = Math.abs(returned.getTime() - end.getTime());
             long diffInDays = TimeUnit.DAYS.convert(diffInMilliSec, TimeUnit.MILLISECONDS);
-            long diffInDaysPlusEnd = diffInDays;  // 차이 일수에 1을 더합니다
 
             // returned에 end와 차이 일수를 더해줍니다
             Calendar calendar = Calendar.getInstance();
             calendar.setTime(returned);
-            calendar.add(Calendar.DATE, (int) diffInDaysPlusEnd);
+            calendar.add(Calendar.DATE, (int) diffInDays);
             returned = calendar.getTime();
 
             dao.updateReturnDate(returned, userId);

@@ -400,10 +400,11 @@ public class LibraryDAO {
 
     public void updateReturnDate(Date date, String userId) {
         String sql = "update book_user set service_stop = ? where user_id = ?;";
+        java.sql.Date sqlDate = new java.sql.Date(date.getTime());
 
         try {
             PreparedStatement pstmt = this.con.prepareStatement(sql);
-            pstmt.setDate(1, (java.sql.Date) date);
+            pstmt.setDate(1, sqlDate);
             pstmt.setString(2, userId);
             pstmt.executeUpdate();
 

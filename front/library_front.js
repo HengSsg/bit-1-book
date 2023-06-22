@@ -11,8 +11,7 @@ const bookNumberInput = document.getElementById("bookNumInput");
 const borrowButton = document.getElementById("burrowBtn");
 const returnButton = document.getElementById("returnBtn");
 
-
-function borrowFunc(){
+function borrowFunc() {
   $.ajax({
     url: `http://localhost:8080/borrow?userId=${userIdInput.value}&bookNum=${bookNumberInput.value}`,
     type: "GET",
@@ -21,17 +20,17 @@ function borrowFunc(){
       console.log(data);
       let borrowResult = data.result;
       console.log(borrowResult);
-      if(borrowResult){
+      if (borrowResult) {
         alert("대출 성공");
         list();
-      }else{
+      } else {
         alert("코드를 다시 작성하세요");
       }
-    }
+    },
   });
 }
 
-function returnFunc(){
+function returnFunc() {
   $.ajax({
     url: `http://localhost:8080/return?userId=${userIdInput.value}&bookNum=${bookNumberInput.value}`,
     type: "GET",
@@ -40,16 +39,15 @@ function returnFunc(){
       console.log(data);
       let borrowResult = data.result;
       console.log(borrowResult);
-      if(borrowResult){
+      if (borrowResult) {
         alert("반납 성공");
         list();
-      }else{
+      } else {
         alert("코드를 다시 작성하세요");
       }
-    }
+    },
   });
 }
-
 
 function list() {
   $.ajax({
@@ -57,8 +55,9 @@ function list() {
     type: "GET",
     dataType: "json",
     success: function (data) {
-      console.log(data.userData);
-          
+      let uData = data.userData;
+      console.log(uData);
+
       user_status.innerHTML = `
       <tr>
             <td>대출도서</td>
@@ -70,22 +69,18 @@ function list() {
             <td>대출정지기간</td>
           </tr>
           <tr>
-        <td>${data.userData.totalBookList.length}</td>
-        <td>${data.userData.totalReturnList.length}</td>
-        <td>${data.userData.OverdueBookList.length}</td>
-        <td>${data.userData.soonReturnList.length}</td>
+        <td>${uData.totalBookList.length}</td>
+        <td>${uData.totalReturnList.length}</td>
+        <td>${uData.OverdueBookList.length}</td>
+        <td>${uData.soonReturnList.length}</td>
+        <td>${uData.totalUserInfo[0].maxBook}</td>
         <td>${
-          data.userData.totalUserInfo[0].maxBook
+          uData.totalUserInfo[0].status === "00" ? "사용가능" : "사용불가"
         }</td>
         <td>${
-          data.userData.totalUserInfo[0].status === "00"
-            ? "사용가능"
-            : "사용불가"
-        }</td>
-        <td>${
-          data.userData.totalUserInfo.serviceStop == null
+          uData.totalUserInfo.serviceStop == null
             ? "-"
-            : data.userData.totalUserInfo.serviceStop
+            : uData.totalUserInfo.serviceStop
         }</td>
     </tr>`;
 
@@ -96,13 +91,13 @@ function list() {
       <td>대출일자</td>
       <td>반납일자</td>
     </tr>`;
-      for (let i = 0; i < data.userData.totalBookList.length; i++) {
+      for (let i = 0; i < uData.totalBookList.length; i++) {
         total.innerHTML += `<tr>
-          <td>${data.userData.totalBookList[i].book_seq}</td>
-          <td>${data.userData.totalBookList[i].book_title}</td>
-          <td>${data.userData.totalBookList[i].book_author}</td>
-          <td>${data.userData.totalBookList[i].borrow_start}</td>
-          <td>${data.userData.totalBookList[i].borrow_end}</td>
+          <td>${uData.totalBookList[i].book_seq}</td>
+          <td>${uData.totalBookList[i].book_title}</td>
+          <td>${uData.totalBookList[i].book_author}</td>
+          <td>${uData.totalBookList[i].borrow_start}</td>
+          <td>${uData.totalBookList[i].borrow_end}</td>
       </tr>`;
       }
 
@@ -113,13 +108,13 @@ function list() {
       <td>대출일자</td>
       <td>반납일자</td>
     </tr>`;
-      for (let i = 0; i < data.userData.totalReturnList.length; i++) {
+      for (let i = 0; i < uData.totalReturnList.length; i++) {
         returned.innerHTML += `<tr>
-            <td>${data.userData.totalReturnList[i].book_seq}</td>
-            <td>${data.userData.totalReturnList[i].book_title}</td>
-            <td>${data.userData.totalReturnList[i].book_author}</td>
-            <td>${data.userData.totalReturnList[i].borrow_start}</td>
-            <td>${data.userData.totalReturnList[i].borrow_end}</td>
+            <td>${uData.totalReturnList[i].book_seq}</td>
+            <td>${uData.totalReturnList[i].book_title}</td>
+            <td>${uData.totalReturnList[i].book_author}</td>
+            <td>${uData.totalReturnList[i].borrow_start}</td>
+            <td>${uData.totalReturnList[i].borrow_end}</td>
         </tr>`;
       }
 
@@ -132,13 +127,13 @@ function list() {
             <td>대출일자</td>
             <td>반납일자</td>
           </tr>`;
-      for (let i = 0; i < data.userData.OverdueBookList.length; i++) {
+      for (let i = 0; i < uData.OverdueBookList.length; i++) {
         not_returned.innerHTML += `<tr>
-              <td>${data.userData.OverdueBookList[i].book_seq}</td>
-              <td>${data.userData.OverdueBookList[i].book_title}</td>
-              <td>${data.userData.OverdueBookList[i].book_author}</td>
-              <td>${data.userData.OverdueBookList[i].borrow_start}</td>
-              <td>${data.userData.OverdueBookList[i].borrow_end}</td>
+              <td>${uData.OverdueBookList[i].book_seq}</td>
+              <td>${uData.OverdueBookList[i].book_title}</td>
+              <td>${uData.OverdueBookList[i].book_author}</td>
+              <td>${uData.OverdueBookList[i].borrow_start}</td>
+              <td>${uData.OverdueBookList[i].borrow_end}</td>
           </tr>`;
       }
       totexpecting_returnal.innerHTML = `<tr>
@@ -148,13 +143,13 @@ function list() {
       <td>대출일자</td>
       <td>반납일자</td>
     </tr>`;
-      for (let i = 0; i < data.userData.soonReturnList.length; i++) {
+      for (let i = 0; i < uData.soonReturnList.length; i++) {
         totexpecting_returnal.innerHTML += `<tr>
-              <td>${data.userData.soonReturnList[i].book_seq}</td>
-              <td>${data.userData.soonReturnList[i].book_title}</td>
-              <td>${data.userData.soonReturnList[i].book_author}</td>
-              <td>${data.userData.soonReturnList[i].borrow_start}</td>
-              <td>${data.userData.soonReturnList[i].borrow_end}</td>
+              <td>${uData.soonReturnList[i].book_seq}</td>
+              <td>${uData.soonReturnList[i].book_title}</td>
+              <td>${uData.soonReturnList[i].book_author}</td>
+              <td>${uData.soonReturnList[i].borrow_start}</td>
+              <td>${uData.soonReturnList[i].borrow_end}</td>
           </tr>`;
       }
     },

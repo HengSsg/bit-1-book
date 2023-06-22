@@ -143,7 +143,7 @@ public class LibraryBookService {
 
         innerJO.put("status", dto.getStatus());
         innerJO.put("maxBook", dto.getMaxBook());
-        innerJO.put("serviceStop", dto.getServiceStop());
+        innerJO.put("serviceStop", dto.getServiceStop().toString());
 
         totalUser.add(innerJO);
 

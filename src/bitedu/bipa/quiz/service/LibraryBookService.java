@@ -143,7 +143,11 @@ public class LibraryBookService {
 
         innerJO.put("status", dto.getStatus());
         innerJO.put("maxBook", dto.getMaxBook());
-        innerJO.put("serviceStop", dto.getServiceStop().toString());
+        String serviceStop = "";
+        if (dto.getServiceStop() != null) {
+            serviceStop = dto.getServiceStop().toString();
+        }
+        innerJO.put("serviceStop", serviceStop);
 
         totalUser.add(innerJO);
 
@@ -188,7 +192,7 @@ public class LibraryBookService {
         String message = validateReturn(bookNum, userId);
         JSONObject jo = new JSONObject();
 
-        if(message.equals("반납 가능")){
+        if (message.equals("반납 가능")) {
             boolean isReturn = dao.updateBookReturn(bookNum, userId);
             addServiceStop(bookNum, userId);
 
@@ -243,7 +247,7 @@ public class LibraryBookService {
         UseStatus useStatus = dao.selectUseStatus(bookNumParsed, userId);
 
         // return date가 있을때
-        if(useStatus.getReturn_date() != null) {
+        if (useStatus.getReturn_date() != null) {
             return "이미 반납완료한 책입니다.";
         }
 

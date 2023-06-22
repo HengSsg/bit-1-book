@@ -75,13 +75,13 @@ function list() {
         <td>${uData.soonReturnList.length}</td>
         <td>${uData.totalUserInfo[0].maxBook}</td>
         <td>${
-          uData.totalUserInfo[0].status === "00" ? "사용가능" : "사용불가"
+          uData.totalUserInfo[0].maxBook == 0
+            ? "사용불가"
+            : uData.totalUserInfo[0].status === "00"
+            ? "사용가능"
+            : "사용불가"
         }</td>
-        <td>${
-          uData.totalUserInfo.serviceStop == null
-            ? "-"
-            : uData.totalUserInfo.serviceStop
-        }</td>
+        <td>${uData.totalUserInfo[0].serviceStop}</td>
     </tr>`;
 
       total.innerHTML = `<tr>

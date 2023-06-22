@@ -21,7 +21,7 @@ function borrowFunc() {
       let borrowResult = data.result;
       console.log(borrowResult);
       if (borrowResult) {
-        alert("대출 성공");
+        alert(borrowResult);
         list();
       } else {
         alert("코드를 다시 작성하세요");
@@ -40,7 +40,7 @@ function returnFunc() {
       let borrowResult = data.result;
       console.log(borrowResult);
       if (borrowResult) {
-        alert("반납 성공");
+        alert(borrowResult);
         list();
       } else {
         alert("코드를 다시 작성하세요");

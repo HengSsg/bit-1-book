@@ -135,7 +135,7 @@ public class LibraryDAO {
 		String sql = "SELECT bs.book_seq, bi.book_title, bi.book_author, bs.borrow_start, bs.borrow_end "
 				+ "FROM book_info bi " + "JOIN book_copy bc ON bi.book_isbn = bc.book_isbn "
 				+ "JOIN book_use_status bs ON bs.book_seq = bc.book_seq "
-				+ "WHERE bs.user_id = ? AND bs.borrow_end < CURDATE() AND bs.return_date IS NULL";
+				+ "WHERE bs.user_id = ? AND bs.borrow_end > CURDATE() AND bs.return_date IS NULL";
 
 		try {
 

@@ -2,7 +2,6 @@ package bitedu.bipa.quiz;
 
 import bitedu.bipa.quiz.service.LibraryBookService;
 
-import java.io.IOException;
 import java.sql.SQLException;
 
 public class Solution {

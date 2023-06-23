@@ -27,7 +27,7 @@ public class DatabaseConnection { // 싱글톤으로 커넥션 생성
             // 커넥션 생성 로직
 
             Properties prop = new Properties();
-            try (FileInputStream fileInputStream = new FileInputStream("data/db.properties")) {
+            try (FileInputStream fileInputStream = new FileInputStream("/Users/hengssg/Java-Spring/bit/bit-1-book/data/db.properties")) {
                 prop.load(fileInputStream);
                 String jdbcURL = prop.getProperty("jdbcURL");
                 String driver = prop.getProperty("driver");

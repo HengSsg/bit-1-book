@@ -2,7 +2,7 @@ package bitedu.bipa.quiz.dao;
 
 import bitedu.bipa.quiz.ListDTO;
 import bitedu.bipa.quiz.dto.UserDTO;
-import bitedu.bipa.quiz.util.ConnectionManager;
+import bitedu.bipa.quiz.util.DatabaseConnection;
 import bitedu.bipa.quiz.vo.UseStatus;
 import bitedu.bipa.quiz.vo.UserVO;
 

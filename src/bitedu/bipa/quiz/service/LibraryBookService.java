@@ -195,6 +195,7 @@ public class LibraryBookService {
         // 사용자 정보 조회
         UserVO user = dao.selectUser(userId);
         UseStatus useStatus = dao.selectUseStatus(bookNum, userId);
+        boolean notOtherBorrow = dao.selectBookCopy(bookNum);
 
         // 대출 가능한 책이 1개 이상일때
         if (user.getMaxBook() < 1) {
@@ -222,6 +223,9 @@ public class LibraryBookService {
             }
         }
         // 대여중인 도서일때
+        if (!notOtherBorrow) {
+            return "대출 불가: 대출중인 도서입니다.";
+        }
 
 
         return "대출 가능";

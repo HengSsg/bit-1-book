@@ -339,4 +339,27 @@ public class LibraryDAO {
             e.printStackTrace();
         }
     }
+
+    // 다른 사람이 대출
+    public boolean selectBookCopy(int book_seq) {
+        boolean result = false;
+        String sql = "select * from book_copy where book_seq = ?;";
+
+        try {
+            PreparedStatement pstmt = this.con.prepareStatement(sql);
+            pstmt.setInt(1, book_seq);
+            ResultSet rs = pstmt.executeQuery();
+            String status = "";
+            while (rs.next()) {
+                status = rs.getString("book_position");
+            }
+
+            if( status.equals("BS-0001")) {
+                result = true;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
 }

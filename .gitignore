@@ -4,6 +4,7 @@ out/
 !**/src/test/**/out/
 
 ### Eclipse ###
+.idea/*
 .apt_generated
 .classpath
 .factorypath
@@ -31,3 +32,5 @@ bin/
 front/data.json
 *.properties
 data/db.properties
+.idea/
+*.iml

@@ -23,31 +23,6 @@ public class LibraryBookService {
         dao = new LibraryDAO();
     }
 
-
-//    public void rentBook(int book_seq, String user_id, String borrow_start, String borrow_end) {
-//
-//        boolean flag = dao.insertBookUseState(book_seq, user_id, borrow_start, borrow_end);
-//
-//        if (flag) {
-//            System.out.println("대출이 완료되었습니다.");
-//        } else {
-//            System.out.println("이미 대출중인 책입니다..");
-//        }
-//
-//    }
-//
-//    public void returnBook(int book_seq, String user_id, String return_date) {
-//
-//        boolean flag = dao.updateBookUseState(book_seq, user_id, return_date);
-//
-//        if (flag) {
-//            System.out.println("반납이 완료되었습니다.");
-//        } else {
-//            System.out.println("반납에 실패하였습니다.");
-//        }
-//
-//    }
-
     public JSONObject getUserInfo(String userId) {
         JSONObject result = new JSONObject();
         JSONObject obj = new JSONObject();
@@ -178,8 +153,15 @@ public class LibraryBookService {
         JSONObject jo = new JSONObject();
 
         if (message.equals("대출 가능")) {
-            jo.put("result", dao.insertBookBorrow(bookNum, userId));
-            return jo;
+            boolean result = dao.insertBookBorrow(bookNum, userId);
+            if (result) {
+                jo.put("result", "대출이 완료되었습니다.");
+                return jo;
+            } else {
+                jo.put("result", "대출 중 문제가 발생하였습니다.");
+                return jo;
+            }
+
         } else {
             jo.put("result", message);
             return jo;
@@ -193,16 +175,19 @@ public class LibraryBookService {
         JSONObject jo = new JSONObject();
 
         if (message.equals("반납 가능")) {
-            boolean isReturn = dao.updateBookReturn(bookNum, userId);
-            addServiceStop(bookNum, userId);
-
-            jo.put("result", isReturn);
-            return jo;
+            boolean result = dao.updateBookReturn(bookNum, userId);
+            if (result) {
+                jo.put("result", "반납이 완료되었습니다.");
+                addServiceStop(bookNum, userId);
+                return jo;
+            } else {
+                jo.put("result", "반납 중 문제가 발생하였습니다.");
+                return jo;
+            }
         } else {
             jo.put("result", message);
             return jo;
         }
-
     }
 
     // 도서대출 예외처리
@@ -236,6 +221,9 @@ public class LibraryBookService {
                 return "대출 불가: 대출 불가 기간입니다.";
             }
         }
+        // 대여중인 도서일때
+
+
         return "대출 가능";
     }
 

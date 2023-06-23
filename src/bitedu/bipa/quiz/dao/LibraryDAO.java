@@ -24,81 +24,6 @@ public class LibraryDAO {
         this.con = ConnectionManager.getConnection();
     }
 
-
-//    // 도서 대출
-//    public boolean insertBookUseState(int book_seq, String user_id, String borrow_start, String borrow_end) {
-//        boolean flag = false;
-//        String sql = "insert into book_use_status(book_seq, user_id, borrow_start, borrow_end) values(?, ?, ?, ?);";
-//
-//        try {
-//            PreparedStatement pstmt = con.prepareStatement(sql);
-//            pstmt.setInt(1, book_seq);
-//            pstmt.setString(2, user_id);
-//            pstmt.setString(3, borrow_start);
-//            pstmt.setString(4, borrow_end);
-//            int affectedCount = pstmt.executeUpdate();
-//            if (affectedCount > 0) {
-//                flag = true;
-//            }
-//            ConnectionManager.closeConnection(null, pstmt, con);
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//        }
-//        return flag;
-//    }
-//
-//
-//    // 도서 반납
-//    public boolean updateBookUseState(int book_seq, String user_id, String return_date) {
-//        boolean flag = false;
-//        String sql = "update book_use_status set return_date=? where user_id=? and book_seq=?;";
-//
-//        try {
-//            PreparedStatement pstmt = con.prepareStatement(sql);
-//            pstmt.setString(2, user_id);
-//            pstmt.setString(1, return_date);
-//            pstmt.setInt(3, book_seq);
-//            int affectedCount = pstmt.executeUpdate();
-//            if (affectedCount > 0) {
-//                flag = true;
-//            }
-//            ConnectionManager.closeConnection(null, pstmt, con);
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//        }
-//        return flag;
-//    }
-//
-//    public UserVO selectUser(String user_id) {
-//        UserVO userVO = null;
-//        String sql = "select * from book_user where user_id=?;";
-//
-//        try {
-//            PreparedStatement pstmt = con.prepareStatement(sql);
-//            pstmt.setString(1, user_id);
-//            ResultSet rs = pstmt.executeQuery();
-//            userVO = new UserVO();
-//            while (rs.next()) {
-//
-//                userVO.setUserSeq(rs.getInt("user_seq"));
-//                userVO.setUserId(rs.getString("user_id"));
-//                userVO.setUserPass(rs.getString("user_pass"));
-//                userVO.setUserPhoneNumber(rs.getString("user_phone_number"));
-//                userVO.setUserState(rs.getString("user_status"));
-//                userVO.setUserGrade(rs.getString("user_grade"));
-//                userVO.setMaxBook(rs.getInt("max_book"));
-//                userVO.setServiceStop(rs.getTimestamp("service_stop"));
-//
-//            }
-//
-//
-//        } catch (SQLException e) {
-//
-//        }
-//        return userVO;
-//
-//    }
-
     // 전체반납목록
     public ArrayList<ListDTO> totalReturnList(String userId) {
         ArrayList<ListDTO> list = new ArrayList<>();
@@ -398,6 +323,7 @@ public class LibraryDAO {
         return useStatus;
     }
 
+    // 미반납도서 대출 중지 기간 추가
     public void updateReturnDate(Date date, String userId) {
         String sql = "update book_user set service_stop = ? where user_id = ?;";
         java.sql.Date sqlDate = new java.sql.Date(date.getTime());
